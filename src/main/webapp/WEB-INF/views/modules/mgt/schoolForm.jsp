@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/mgt/school/">School列表</a></li>
-		<li class="active"><a href="${ctx}/mgt/school/form?id=${school.id}">School<shiro:hasPermission name="mgt:school:edit">${not empty school.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="mgt:school:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/mgt/school/">学校列表</a></li>
+		<li class="active"><a href="${ctx}/mgt/school/form?id=${school.id}">学校<shiro:hasPermission name="mgt:school:edit">${not empty school.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="mgt:school:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="school" action="${ctx}/mgt/school/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

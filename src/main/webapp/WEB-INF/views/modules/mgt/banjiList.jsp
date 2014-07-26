@@ -47,7 +47,7 @@
 		          <td>${banji.grade}</td>
 		          <td>${banji.year}</td>
 		          <td>${banji.type}</td>
-		          <td>${banji.schoolId}</td>
+		          <td>${banji.school.name}</td>
 	            <td>${banji.remarks}</td>
 				<shiro:hasPermission name="mgt:banji:edit"><td>
     				<a href="${ctx}/mgt/banji/form?id=${banji.id}">修改</a>

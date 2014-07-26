@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/mgt/school/">School列表</a></li>
-		<shiro:hasPermission name="mgt:school:edit"><li><a href="${ctx}/mgt/school/form">School添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/mgt/school/">学校列表</a></li>
+		<shiro:hasPermission name="mgt:school:edit"><li><a href="${ctx}/mgt/school/form">学校添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="school" action="${ctx}/mgt/school/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

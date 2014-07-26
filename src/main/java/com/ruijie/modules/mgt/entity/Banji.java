@@ -3,6 +3,7 @@ package com.ruijie.modules.mgt.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +23,10 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruijie.common.persistence.IdEntity;
 import com.ruijie.modules.sys.entity.User;
+import com.ruijie.common.utils.excel.annotation.ExcelField;
 
 /**
  * 数据库实体类
@@ -62,8 +65,17 @@ public class Banji extends IdEntity<Banji>{
     /**
      * 所在学校       db_column: school_id 
      */ 	
-	private java.lang.String schoolId;
-	//columns END
+	
+	
+	private School school;
+	
+	public Banji(){
+	}
+	public Banji(String id){
+		this();
+		this.id = id;
+	}
+
 	public java.lang.String getNo() {
 		return this.no;
 	}
@@ -99,24 +111,24 @@ public class Banji extends IdEntity<Banji>{
 	public void setType(java.lang.String value) {
 		this.type = value;
 	}
-	public java.lang.String getSchoolId() {
-		return this.schoolId;
+	
+	@ManyToOne
+	@JoinColumn(name="school_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@NotNull(message="所属班级不能为空")
+	@ExcelField(title="归属部门", align=2, sort=25)
+	public School getSchool() {
+		return this.school;
 	}
 	
-	public void setSchoolId(java.lang.String value) {
-		this.schoolId = value;
+	public void setSchool(School value) {
+		this.school = value;
 	}
 
 	
 	
 
-	public Banji(){
-	}
-	public Banji(String id){
-		this();
-		this.id = id;
-	}
-
+	
 
 
 	public String toString() {
@@ -127,7 +139,7 @@ public class Banji extends IdEntity<Banji>{
 			.append("Grade",getGrade())
 			.append("Year",getYear())
 			.append("Type",getType())
-			.append("SchoolId",getSchoolId())
+			.append("School",getSchool())
 			.append("Remarks",getRemarks())
 			.toString();
 	}

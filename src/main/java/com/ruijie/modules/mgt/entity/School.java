@@ -33,7 +33,7 @@ import com.ruijie.modules.sys.entity.User;
 
 @Entity
 @Table(name = "mgt_school")
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class School extends IdEntity<School>{
 	
 	private static final long serialVersionUID = 1L;

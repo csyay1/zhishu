@@ -67,8 +67,9 @@
 		    <div class="control-group">
 				<label class="control-label">所在学校:</label>
 				<div class="controls">
-					<form:input path="schoolId" htmlEscape="false" maxlength="200" class="required"/>
-				</div>
+	                <tags:treeselect id="school" name="school.id" value="${banji.school.id}" labelName="school.name" labelValue="${banji.school.name}"
+						title="学校" url="/mgt/school/treeData?type=2" cssClass="required"/>
+			    </div>
 		   </div>
 		<div class="control-group">
 			<label class="control-label">备注:</label>

@@ -5,6 +5,8 @@ package com.ruijie.modules.mgt.service;
 /**
  * school service.
  */
+import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -54,5 +56,10 @@ public class SchoolService extends BaseService {
 	public void delete(String id) {
 		schoolDao.deleteById(id);
 	}
+	
+	public List<School> findAll() {
+		return schoolDao.findAll();
+	}
+	
 	
 }
