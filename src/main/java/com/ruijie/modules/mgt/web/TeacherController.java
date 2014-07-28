@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.ruijie.modules.mgt.entity.Banji;
+import com.ruijie.modules.mgt.service.BanjiService;
 import com.ruijie.modules.sys.entity.Role;
 import com.ruijie.modules.sys.entity.User;
 import com.ruijie.modules.sys.service.SystemService;
@@ -49,6 +51,8 @@ public class TeacherController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private BanjiService banjiService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -93,16 +97,7 @@ public class TeacherController extends BaseController {
 			addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
 			return form(user, model);
 		}
-		// 角色数据有效性验证，过滤不在授权内的角色
-		List<Role> roleList = Lists.newArrayList();
-		List<String> roleIdList = user.getRoleIdList();
-		for (Role r : systemService.findAllRole()){
-			if (roleIdList.contains(r.getId())){
-				roleList.add(r);
-			}
-		}
-		user.setRoleList(roleList);
-		// 保存用户信息
+
 		systemService.saveUser(user);
 		// 清除当前用户缓存
 	

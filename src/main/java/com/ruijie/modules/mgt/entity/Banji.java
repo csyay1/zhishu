@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -117,6 +118,7 @@ public class Banji extends IdEntity<Banji>{
 	@NotFound(action = NotFoundAction.IGNORE)
 	@NotNull(message="所属班级不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
+	@JsonIgnore
 	public School getSchool() {
 		return this.school;
 	}
@@ -124,7 +126,16 @@ public class Banji extends IdEntity<Banji>{
 	public void setSchool(School value) {
 		this.school = value;
 	}
-
+	
+	@Transient
+	public String getSchoolName() {
+		return this.school.getName();
+	}
+	
+	@Transient
+	public String getSchoolNo() {
+		return this.school.getNo();
+	}
 	
 	
 

@@ -127,6 +127,20 @@ public class SystemService extends BaseService  {
 			dc.add(Restrictions.in("roleList.id", roleIds));
 			//dc.add(Restrictions.eq("roleList.id", 5));
 		}
+		
+		if(!Collections3.isEmpty(user.getBanjiList())){
+			dc.createAlias("banjiList", "list");
+			dc.add(Restrictions.in("list.id", Collections3.extractToList(user.getBanjiList(), "id")));
+		}
+		
+		if(StringUtils.isNotEmpty(user.getStudentName())){
+			dc.add(Restrictions.like("studentName", "%"+user.getStudentName()+"%"));
+		}
+		
+		if(StringUtils.isNotEmpty(user.getStudentNo())){
+			dc.add(Restrictions.eq("studentNo", user.getStudentNo()));
+		}
+		
 		if (StringUtils.isNotEmpty(user.getLoginName())){
 			dc.add(Restrictions.like("loginName", "%"+user.getLoginName()+"%"));
 		}

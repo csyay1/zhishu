@@ -51,6 +51,20 @@ public class Global {
 	}
 	
 	/**
+	 * 获取手机客户端接口路径
+	 */
+	public static String getPhonePath() {
+		return getConfig("phonePath");
+	}
+	
+	/**
+	 * 获取手机客户端接口路径
+	 */
+	public static String getTokenTime() {
+		return getConfig("tokenTime");
+	}
+	
+	/**
 	 * 获取前端根路径
 	 */
 	public static String getFrontPath() {

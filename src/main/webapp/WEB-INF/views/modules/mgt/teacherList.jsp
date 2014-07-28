@@ -70,10 +70,14 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<input id="orderBy" name="orderBy" type="hidden" value="${page.orderBy}"/>
+		
 		<div>
 			<label>登录名：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-small"/>
-		</div><div style="margin-top:8px;">
 			<label>姓&nbsp;&nbsp;&nbsp;名：</label><form:input path="name" htmlEscape="false" maxlength="50" class="input-small"/>
+		</div><div style="margin-top:8px;">
+			<label>所属班级：</label><tags:treeselect id="banjis" name="banjiIds" value="${user.banjiIds}" labelName="banjiNames" labelValue="${user.banjiNames}"
+				title="班级" url="/mgt/banji/treeData" cssClass="input-small" allowClear="true" checked="true" notAllowSelectParent="true" />
+				
 			&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
 			&nbsp;<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
 			&nbsp;<input id="btnImport" class="btn btn-primary" type="button" value="导入"/>
@@ -81,7 +85,7 @@
 	</form:form>
 	<tags:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
-		<thead><tr><th class="sort loginName">登录名</th><th class="sort name">姓名</th><th>电话</th><th>手机</th><th>角色</th><shiro:hasPermission name="mgt:teacher:edit"><th>操作</th></shiro:hasPermission></tr></thead>
+		<thead><tr><th class="sort loginName">登录名</th><th class="sort name">姓名</th><th>电话</th><th>手机</th><th>角色</th><th>所属班级</th><shiro:hasPermission name="mgt:teacher:edit"><th>操作</th></shiro:hasPermission></tr></thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="user">
 			<tr>
@@ -90,6 +94,7 @@
 				<td>${user.phone}</td>
 				<td>${user.mobile}</td>
 				<td>${user.roleNames}</td>
+				<td>${user.banjiNames}</td>
 				<shiro:hasPermission name="mgt:teacher:edit"><td>
     				<a href="${ctx}/mgt/teacher/form?id=${user.id}">修改</a>
 					<a href="${ctx}/mgt/teacher/delete?id=${user.id}" onclick="return confirmx('确认要删除该用户吗？', this.href)">删除</a>

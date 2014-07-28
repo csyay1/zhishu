@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
@@ -38,6 +39,7 @@ import com.ruijie.common.persistence.IdEntity;
 import com.ruijie.common.utils.Collections3;
 import com.ruijie.common.utils.excel.annotation.ExcelField;
 import com.ruijie.common.utils.excel.fieldtype.RoleListType;
+import com.ruijie.modules.mgt.entity.Banji;
 
 /**
  * 用户Entity
@@ -65,6 +67,7 @@ public class User extends IdEntity<User> {
 	private Date loginDate;	// 最后登陆日期
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+	private List<Banji> banjiList=Lists.newArrayList();
 
 	public User() {
 		super();
@@ -248,6 +251,22 @@ public class User extends IdEntity<User> {
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
 	}
+	
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "mgt_user_banji", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "banji_id") })
+	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
+	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@JsonIgnore
+	public List<Banji> getBanjiList() {
+		return banjiList;
+	}
+
+	public void setBanjiList(List<Banji> banjiList) {
+		this.banjiList = banjiList;
+	}
 
 	@Transient
 	@JsonIgnore
@@ -267,6 +286,31 @@ public class User extends IdEntity<User> {
 			role.setId(roleId);
 			roleList.add(role);
 		}
+	}
+	
+	@Transient
+	@JsonIgnore
+	public String getBanjiIds() {
+		return Collections3.extractToString(banjiList, "id", ",");
+	}
+
+	@Transient
+	public void setBanjiIds(String ids) {
+		banjiList = Lists.newArrayList();
+		logger.info("setBanjiIds:"+ids);
+		if(StringUtils.isEmpty(ids))return;
+		String[] ss=ids.split(","); 
+		for (String banjiId : ss) {
+			if(StringUtils.isEmpty(banjiId))continue;
+			Banji banji = new Banji(banjiId);
+			banjiList.add(banji);
+		}
+	}
+	
+	@Transient
+	@JsonIgnore
+	public String getBanjiNames() {
+		return Collections3.extractToString(banjiList, "name", ", ");
 	}
 	
 	/**

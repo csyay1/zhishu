@@ -24,10 +24,12 @@ import com.google.common.collect.Maps;
 import com.ruijie.common.config.Global;
 import com.ruijie.common.persistence.Page;
 import com.ruijie.common.web.BaseController;
+import com.ruijie.common.utils.CacheUtils;
 import com.ruijie.common.utils.StringUtils;
 import com.ruijie.modules.sys.entity.User;
 import com.ruijie.modules.sys.utils.UserUtils;
 import com.ruijie.modules.mgt.entity.School;
+import com.ruijie.modules.mgt.service.BanjiService;
 import com.ruijie.modules.mgt.service.SchoolService;
 
 
@@ -79,6 +81,7 @@ public class SchoolController extends BaseController {
 			return form(school, model);
 		}
 		schoolService.save(school);
+		removeSchoolandBanjiCache();
 		addMessage(redirectAttributes, "保存School'" + school.getName() + "'成功");
 		return "redirect:"+Global.getAdminPath()+"/mgt/school/?repage";
 	}
@@ -87,6 +90,7 @@ public class SchoolController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(String id, RedirectAttributes redirectAttributes) {
 		schoolService.delete(id);
+		removeSchoolandBanjiCache();
 		addMessage(redirectAttributes, "删除School成功");
 		return "redirect:"+Global.getAdminPath()+"/mgt/school/?repage";
 	}
@@ -98,7 +102,7 @@ public class SchoolController extends BaseController {
 		response.setContentType("application/json; charset=UTF-8");
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 //		User user = UserUtils.getUser();
-		List<School> list = schoolService.findAll();
+		List<School> list = schoolService.findAllWithCache();
 		for (int i=0; i<list.size(); i++){
 			School e = list.get(i);
 			Map<String, Object> map = Maps.newHashMap();
@@ -107,6 +111,11 @@ public class SchoolController extends BaseController {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+	
+	private void removeSchoolandBanjiCache(){
+		CacheUtils.remove(SchoolService.ALL_SCHOOL_CACHE);
+		CacheUtils.remove(BanjiService.ALL_BANJI_CACHE);
 	}
 
 }

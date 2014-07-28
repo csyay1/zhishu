@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ruijie.common.persistence.Page;
 import com.ruijie.common.service.BaseService;
+import com.ruijie.common.utils.CacheUtils;
 import com.ruijie.common.utils.StringUtils;
+import com.ruijie.modules.mgt.entity.Banji;
 import com.ruijie.modules.mgt.entity.School;
 import com.ruijie.modules.mgt.dao.SchoolDao;
 
@@ -32,6 +34,8 @@ public class SchoolService extends BaseService {
 
 	@Autowired
 	private SchoolDao schoolDao;
+	
+	public static String ALL_SCHOOL_CACHE="allSchoolCache";
 	
 	public School get(String id) {
 		return schoolDao.get(id);
@@ -57,9 +61,17 @@ public class SchoolService extends BaseService {
 		schoolDao.deleteById(id);
 	}
 	
-	public List<School> findAll() {
-		return schoolDao.findAll();
+	public List<School> findAllWithCache() {
+		if(CacheUtils.get(ALL_SCHOOL_CACHE)!=null){
+			return (List<School>) CacheUtils.get(ALL_SCHOOL_CACHE);
+		}
+		List<School> schoolList=schoolDao.findAll();
+		CacheUtils.put(ALL_SCHOOL_CACHE, schoolList);
+		return schoolList;
+
 	}
+	
+	
 	
 	
 }

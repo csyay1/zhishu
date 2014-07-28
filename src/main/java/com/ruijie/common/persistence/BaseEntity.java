@@ -7,6 +7,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import com.ruijie.modules.sys.entity.User;
@@ -21,6 +24,7 @@ import com.ruijie.modules.sys.utils.UserUtils;
 public abstract class BaseEntity<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 当前用户

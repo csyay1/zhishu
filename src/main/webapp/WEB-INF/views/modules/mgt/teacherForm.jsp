@@ -91,12 +91,7 @@
 				<form:input path="mobile" htmlEscape="false" maxlength="100"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注:</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">教师角色:</label>
 			<div class="controls">
@@ -104,6 +99,20 @@
 			</div>
 		</div>
 		
+		<div class="control-group">
+			<label class="control-label">所在班级:</label>
+				<div class="controls">
+	                <tags:treeselect id="banjis" name="banjiIds" value="${user.banjiIds}" labelName="banjiNames" labelValue="${user.banjiNames}"
+						title="班级" url="/mgt/banji/treeData" cssClass="required" checked="true" notAllowSelectParent="true"/>
+			    </div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">备注:</label>
+			<div class="controls">
+				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+			</div>
+		</div>
 		<c:if test="${not empty user.id}">
 			<div class="control-group">
 				<label class="control-label">创建时间:</label>

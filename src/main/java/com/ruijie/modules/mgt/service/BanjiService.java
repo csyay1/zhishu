@@ -5,6 +5,9 @@ package com.ruijie.modules.mgt.service;
 /**
  * banji service.
  */
+import java.util.List;
+import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ruijie.common.persistence.Page;
 import com.ruijie.common.service.BaseService;
+import com.ruijie.common.utils.CacheUtils;
 import com.ruijie.common.utils.StringUtils;
 import com.ruijie.modules.mgt.entity.Banji;
 import com.ruijie.modules.mgt.dao.BanjiDao;
@@ -30,6 +34,8 @@ public class BanjiService extends BaseService {
 
 	@Autowired
 	private BanjiDao banjiDao;
+	
+	public static String ALL_BANJI_CACHE="allBanjiCache";
 	
 	public Banji get(String id) {
 		return banjiDao.get(id);
@@ -53,6 +59,16 @@ public class BanjiService extends BaseService {
 	@Transactional(readOnly = false)
 	public void delete(String id) {
 		banjiDao.deleteById(id);
+	}
+	
+	public List<Banji> findAllWithCache() {
+		if(CacheUtils.get(ALL_BANJI_CACHE)!=null){
+			return (List<Banji>) CacheUtils.get(ALL_BANJI_CACHE);
+		}
+		List<Banji> banjiList=banjiDao.findAll();
+		CacheUtils.put(ALL_BANJI_CACHE, banjiList);
+		return banjiList;
+				
 	}
 	
 }
