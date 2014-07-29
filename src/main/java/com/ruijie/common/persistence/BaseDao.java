@@ -235,8 +235,21 @@ public class BaseDao<T> {
 					break;
 				}
 			}
+			
+			boolean needInsert=false;
+			if(id!=null){
+				if(id instanceof java.lang.String){
+					needInsert=StringUtils.isBlank((String)id);
+				}
+				if(id instanceof java.lang.Integer){
+					needInsert=(int)id<0;
+				}
+				
+			}else{
+				needInsert=true;
+			}
 			// 插入前执行方法
-			if (StringUtils.isBlank((String)id)){
+			if (needInsert){
 				for (Method method : entity.getClass().getMethods()){
 					PrePersist pp = method.getAnnotation(PrePersist.class);
 					if (pp != null){

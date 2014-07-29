@@ -28,6 +28,7 @@ import com.ruijie.modules.sys.entity.Menu;
 import com.ruijie.modules.sys.entity.Role;
 import com.ruijie.modules.sys.entity.User;
 import com.ruijie.common.service.BaseService;
+import com.ruijie.common.utils.CacheUtils;
 import com.ruijie.common.utils.SpringContextHolder;
 
 /**
@@ -84,7 +85,7 @@ public class UserUtils extends BaseService {
 	
 	public static List<Area> getAreaList(){
 		@SuppressWarnings("unchecked")
-		List<Area> areaList = (List<Area>)getCache(CACHE_AREA_LIST);
+		List<Area> areaList = (List<Area>)CacheUtils.get(CACHE_AREA_LIST);
 		if (areaList == null){
 //			User user = getUser();
 //			if (user.isAdmin()){
@@ -92,7 +93,7 @@ public class UserUtils extends BaseService {
 //			}else{
 //				areaList = areaDao.findAllChild(user.getArea().getId(), "%,"+user.getArea().getId()+",%");
 //			}
-			putCache(CACHE_AREA_LIST, areaList);
+				CacheUtils.put(CACHE_AREA_LIST, areaList);
 		}
 		return areaList;
 	}

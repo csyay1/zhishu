@@ -41,10 +41,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	 */
 	protected Map<String, String> sqlMap;
 
-	/**
-	 *从页面搜索还是从菜单搜索（用于非页面搜索时设置默认搜索条件）
-	 */
-	private boolean searchFromPage;
 
 	/**
 	 *用于搜索多个ID的时候设置搜索条件
@@ -94,15 +90,6 @@ public abstract class BaseEntity<T> implements Serializable {
 		this.sqlMap = sqlMap;
 	}
 	
-	@Transient
-	public boolean isSearchFromPage() {
-		return searchFromPage;
-	}
-
-	@Transient
-	public void setSearchFromPage(boolean searchFromPage) {
-		this.searchFromPage = searchFromPage;
-	}
 
 	@Transient
 	public String getIds() {

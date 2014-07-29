@@ -27,6 +27,7 @@ public class DictUtils {
 	private static DictDao dictDao = SpringContextHolder.getBean(DictDao.class);
 
 	public static final String CACHE_DICT_MAP = "dictMap";
+	public static final String ALL_DICT = "allDict";
 	
 	public static String getDictLabel(String value, String type, String defaultValue){
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)){
@@ -68,6 +69,15 @@ public class DictUtils {
 		List<Dict> dictList = dictMap.get(type);
 		if (dictList == null){
 			dictList = Lists.newArrayList();
+		}
+		return dictList;
+	}
+	public static List<Dict> getAllDictList(){
+		@SuppressWarnings("unchecked")
+		List<Dict> dictList=(List<Dict>) CacheUtils.get(ALL_DICT);
+		if(dictList==null){
+			dictList=dictDao.findAllList();
+			CacheUtils.put(ALL_DICT, dictList);
 		}
 		return dictList;
 	}

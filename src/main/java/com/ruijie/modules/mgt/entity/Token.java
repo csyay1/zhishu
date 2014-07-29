@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -19,6 +22,7 @@ import com.ruijie.modules.sys.utils.UserUtils;
 @Table(name = "mgt_token")
 public class Token {
 	
+	private Integer id;
 	private String token;
 	private String userId;
 	private String scope;
@@ -92,20 +96,31 @@ public class Token {
 		this.updateDate = updateDate;
 	}
 	
-	
-	@PrePersist
-	public void prePersist(){
-		this.updateDate = new Date();
-		this.createDate = this.updateDate;
-		Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_YEAR, Integer.parseInt(Global.getTokenTime()));  
-		
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
-	@PreUpdate
-	public void preUpdate(){
-		this.updateDate = new Date();
-	}
+	
+	
+//	@PrePersist
+//	public void prePersist(){
+//		this.updateDate = new Date();
+//		this.createDate = this.updateDate;
+//		Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.DAY_OF_YEAR, Integer.parseInt(Global.getTokenTime()));  
+//
+//	}
+//	
+//	@PreUpdate
+//	public void preUpdate(){
+//		this.updateDate = new Date();
+//	}
 	
 	
 	

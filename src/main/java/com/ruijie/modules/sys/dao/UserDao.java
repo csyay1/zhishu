@@ -8,6 +8,7 @@ package com.ruijie.modules.sys.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.ruijie.modules.sys.entity.User;
@@ -36,6 +37,18 @@ public class UserDao extends BaseDao<User> {
 	
 	public int updateLoginInfo(String loginIp, Date loginDate, String id){
 		return update("update User set loginIp=:p1, loginDate=:p2 where id = :p3", new Parameter(loginIp, loginDate, id));
+	}
+	
+	public Date getUserUpdateDate(String userId){
+		String qlString = "select updateDate from User where id = :p1";  
+
+        Query query = createQuery(qlString, new Parameter(userId));
+        List<Object> list = query.list();
+        if (list.size() > 0){
+        	return (Date) list.get(0);
+        }else{
+        	return null;
+        }
 	}
 	
 }

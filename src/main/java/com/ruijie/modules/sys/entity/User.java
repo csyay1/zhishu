@@ -63,6 +63,7 @@ public class User extends IdEntity<User> {
 	private String mobile;	// 手机
 	private String studentNo;//学号
 	private String studentName;//学生姓名
+	private String openLevel;
 	private String loginIp;	// 最后登陆IP
 	private Date loginDate;	// 最后登陆日期
 	
@@ -77,34 +78,6 @@ public class User extends IdEntity<User> {
 		this();
 		this.id = id;
 	}
-//	
-//	@ManyToOne
-//	@JoinColumn(name="company_id")
-//	@NotFound(action = NotFoundAction.IGNORE)
-//	@JsonIgnore
-//	@NotNull(message="归属公司不能为空")
-//	@ExcelField(title="归属公司", align=2, sort=20)
-//	public Office getCompany() {
-//		return company;
-//	}
-//
-//	public void setCompany(Office company) {
-//		this.company = company;
-//	}
-//	
-//	@ManyToOne
-//	@JoinColumn(name="office_id")
-//	@NotFound(action = NotFoundAction.IGNORE)
-//	@JsonIgnore
-//	@NotNull(message="归属部门不能为空")
-//	@ExcelField(title="归属部门", align=2, sort=25)
-//	public Office getOffice() {
-//		return office;
-//	}
-//
-//	public void setOffice(Office office) {
-//		this.office = office;
-//	}
 
 	@Length(min=1, max=100)
 	@ExcelField(title="登录名", align=2, sort=30)
@@ -203,6 +176,16 @@ public class User extends IdEntity<User> {
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
 	}
+	
+	
+
+	public String getOpenLevel() {
+		return openLevel;
+	}
+
+	public void setOpenLevel(String openLevel) {
+		this.openLevel = openLevel;
+	}
 
 	@Transient
 	@ExcelField(title="备注", align=1, sort=900)
@@ -259,7 +242,6 @@ public class User extends IdEntity<User> {
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	@JsonIgnore
 	public List<Banji> getBanjiList() {
 		return banjiList;
 	}
@@ -325,10 +307,11 @@ public class User extends IdEntity<User> {
 	 */
 	@Transient
 	public String getRoleIds() {
-		return ","+Collections3.extractToString(roleList, "id", ",")+",";
+		return Collections3.extractToString(roleList, "id", ",");
 	}
 	
 	@Transient
+	@JsonIgnore
 	public boolean isAdmin(){
 		return isAdmin(this.id);
 	}

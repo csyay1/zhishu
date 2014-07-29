@@ -29,6 +29,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.ruijie.common.persistence.IdEntity;
 
@@ -102,6 +103,7 @@ public class Role extends IdEntity<Role> {
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@JsonIgnore
 	public List<User> getUserList() {
 		return userList;
 	}
@@ -134,6 +136,7 @@ public class Role extends IdEntity<Role> {
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@JsonIgnore
 	public List<Menu> getMenuList() {
 		return menuList;
 	}

@@ -58,7 +58,7 @@ public class Banji extends IdEntity<Banji>{
     /**
      * 年份       db_column: year 
      */ 	
-	private java.sql.Timestamp year;
+	private java.lang.String year;
     /**
      * 类型       db_column: type 
      */ 	
@@ -98,11 +98,11 @@ public class Banji extends IdEntity<Banji>{
 	public void setGrade(java.lang.String value) {
 		this.grade = value;
 	}
-	public java.sql.Timestamp getYear() {
+	public String getYear() {
 		return this.year;
 	}
 	
-	public void setYear(java.sql.Timestamp value) {
+	public void setYear(String value) {
 		this.year = value;
 	}
 	public java.lang.String getType() {
@@ -118,7 +118,6 @@ public class Banji extends IdEntity<Banji>{
 	@NotFound(action = NotFoundAction.IGNORE)
 	@NotNull(message="所属班级不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
-	@JsonIgnore
 	public School getSchool() {
 		return this.school;
 	}
@@ -128,11 +127,13 @@ public class Banji extends IdEntity<Banji>{
 	}
 	
 	@Transient
+	@JsonIgnore
 	public String getSchoolName() {
 		return this.school.getName();
 	}
 	
 	@Transient
+	@JsonIgnore
 	public String getSchoolNo() {
 		return this.school.getNo();
 	}

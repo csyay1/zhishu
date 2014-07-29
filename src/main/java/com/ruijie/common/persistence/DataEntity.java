@@ -98,6 +98,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> implements Serializabl
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonIgnore
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -130,6 +131,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> implements Serializabl
 
 	@Length(min=1, max=1)
 	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES)
+	@JsonIgnore
 	public String getDelFlag() {
 		return delFlag;
 	}

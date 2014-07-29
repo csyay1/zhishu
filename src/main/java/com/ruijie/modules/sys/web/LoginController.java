@@ -211,7 +211,6 @@ public class LoginController extends BaseController{
 	     session.removeAttribute(UserUtils.LOGIN_USER);
 	     session.removeAttribute(UserUtils.CACHE_MENU_LIST);
 	     session.removeAttribute(UserUtils.CACHE_ROLE_LIST);
-	     session.removeAttribute(UserUtils.CACHE_AREA_LIST);
 	     currentUser.logout();
 	     return "/login";  
 	}

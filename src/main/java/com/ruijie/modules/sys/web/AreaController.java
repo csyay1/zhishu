@@ -71,7 +71,7 @@ public class AreaController extends BaseController {
 	@RequiresPermissions("sys:area:view")
 	@RequestMapping(value = "form")
 	public String form(Area area, Model model) {
-		area.setParent(areaService.get(area.getParent().getId()));
+		area.setParent(areaService.get("1"));
 		model.addAttribute("area", area);
 		return "modules/sys/areaForm";
 	}

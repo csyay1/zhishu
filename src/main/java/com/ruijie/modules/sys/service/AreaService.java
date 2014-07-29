@@ -15,6 +15,7 @@ import com.ruijie.modules.sys.dao.AreaDao;
 import com.ruijie.modules.sys.entity.Area;
 import com.ruijie.modules.sys.utils.UserUtils;
 import com.ruijie.common.service.BaseService;
+import com.ruijie.common.utils.CacheUtils;
 
 /**
  * 区域Service
@@ -49,13 +50,13 @@ public class AreaService extends BaseService {
 			e.setParentIds(e.getParentIds().replace(oldParentIds, area.getParentIds()));
 		}
 		areaDao.save(list);
-		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
+		CacheUtils.remove(UserUtils.CACHE_AREA_LIST);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(String id) {
 		areaDao.deleteById(id, "%,"+id+",%");
-		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
+		CacheUtils.remove(UserUtils.CACHE_AREA_LIST);
 	}
 	
 }
