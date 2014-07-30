@@ -3,13 +3,17 @@ package com.ruijie.modules.mgt.entity;
 
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -20,11 +24,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import com.ruijie.common.persistence.IdEntity;
 import com.ruijie.modules.sys.entity.User;
 import com.ruijie.common.utils.excel.annotation.ExcelField;
@@ -69,6 +77,8 @@ public class Banji extends IdEntity<Banji>{
 	
 	
 	private School school;
+	
+	private List<User> userList = Lists.newArrayList(); // 拥有用户列表
 	
 	public Banji(){
 	}
@@ -138,11 +148,18 @@ public class Banji extends IdEntity<Banji>{
 		return this.school.getNo();
 	}
 	
-	
-
-	
-
-
+	@ManyToMany(mappedBy = "banjiList", fetch=FetchType.LAZY)
+	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
+	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@JsonIgnore
+	public List<User> getUserList() {
+		return userList;
+	}
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
+	}
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())

@@ -201,6 +201,7 @@ public class User extends IdEntity<User> {
 	}
 
 	@ExcelField(title="最后登录IP", type=1, align=1, sort=100)
+	@JsonIgnore
 	public String getLoginIp() {
 		return loginIp;
 	}
@@ -211,6 +212,7 @@ public class User extends IdEntity<User> {
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ExcelField(title="最后登录日期", type=1, align=1, sort=110)
+	@JsonIgnore
 	public Date getLoginDate() {
 		return loginDate;
 	}
@@ -242,6 +244,7 @@ public class User extends IdEntity<User> {
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@JsonIgnore
 	public List<Banji> getBanjiList() {
 		return banjiList;
 	}
@@ -315,6 +318,20 @@ public class User extends IdEntity<User> {
 	public boolean isAdmin(){
 		return isAdmin(this.id);
 	}
+	
+	@Transient
+	@JsonIgnore
+	public boolean isTeacher(){
+		return getRoleIdList().contains("3")||getRoleIdList().contains("4");
+	}
+	
+	@Transient
+	@JsonIgnore
+	public boolean isParents(){
+		return getRoleIdList().size()==1&&getRoleIdList().get(0).equals("5");
+	}
+	
+	
 	
 	@Transient
 	public static boolean isAdmin(String id){

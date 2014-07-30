@@ -35,6 +35,10 @@ public class UserDao extends BaseDao<User> {
 		return update("update User set password=:p1 where id = :p2", new Parameter(newPassword, id));
 	}
 	
+	public int updateOpenLevel(String userId,String level){
+		return update("update User set openLevel=:p1 where id = :p2", new Parameter(level, userId));
+	}
+	
 	public int updateLoginInfo(String loginIp, Date loginDate, String id){
 		return update("update User set loginIp=:p1, loginDate=:p2 where id = :p3", new Parameter(loginIp, loginDate, id));
 	}

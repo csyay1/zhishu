@@ -315,6 +315,15 @@ public class SystemService extends BaseService  {
 		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
 
 	}
+	
+	@Transactional(readOnly = false)
+	public boolean updateOpenLevel(String userId,String level) {
+		if(StringUtils.isNotBlank(level)&&level.length()==1){
+			userDao.updateOpenLevel(userId,level);
+			return true;
+		}
+		return false;
+	}
 
 	
 	
