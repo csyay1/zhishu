@@ -148,6 +148,12 @@ public class Banji extends IdEntity<Banji>{
 		return this.school.getNo();
 	}
 	
+	@Transient
+	@JsonIgnore
+	public String getFullName() {
+		return this.getName()+"/"+this.school.getName();
+	}
+	
 	@ManyToMany(mappedBy = "banjiList", fetch=FetchType.LAZY)
 	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)

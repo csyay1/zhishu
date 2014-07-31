@@ -298,6 +298,12 @@ public class User extends IdEntity<User> {
 		return Collections3.extractToString(banjiList, "name", ", ");
 	}
 	
+	@Transient
+	@JsonIgnore
+	public String getBanjiFullNames() {
+		return Collections3.extractToString(banjiList, "fullName", ", ");
+	}
+	
 	/**
 	 * 用户拥有的角色名称字符串, 多个角色名称用','分隔.
 	 */
