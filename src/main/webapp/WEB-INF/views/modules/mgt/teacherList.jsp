@@ -75,7 +75,7 @@
 			<label>登录名：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-small"/>
 			<label>姓&nbsp;&nbsp;&nbsp;名：</label><form:input path="name" htmlEscape="false" maxlength="50" class="input-small"/>
 		</div><div style="margin-top:8px;">
-			<label>所属班级：</label><tags:treeselect id="banjis" name="banjiIds" value="${user.banjiIds}" labelName="banjiNames" labelValue="${user.banjiNames}"
+			<label>所属班级：</label><tags:treeselect id="banjis" name="banjiIds" value="" labelName="banjiNames" labelValue=""
 				title="班级" url="/mgt/banji/treeData" cssClass="input-small" allowClear="true" checked="true" notAllowSelectParent="true" />
 				
 			&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>

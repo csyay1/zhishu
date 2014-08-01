@@ -24,10 +24,10 @@
 	<form:form id="searchForm" modelAttribute="sign" action="${ctx}/mgt/sign/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-		<label>所属班级：</label><tags:treeselect id="banjis" name="parents.banjiIds" value="${sign.parents.banjiIds}" labelName="banjiNames" labelValue="${sign.parents.banjiNames}"
+		<label>所属班级：</label><tags:treeselect id="banjis" name="parents.banjiIds" value="" labelName="banjiNames" labelValue=""
 				title="班级" url="/mgt/banji/treeData" cssClass="input-small" allowClear="true" checked="true" notAllowSelectParent="true" />
 		<label>记录日期：</label><input id="createDate" name="createDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-				value="${sign.createDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				value="" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 		&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 	</form:form>
 	<tags:message content="${message}"/>
