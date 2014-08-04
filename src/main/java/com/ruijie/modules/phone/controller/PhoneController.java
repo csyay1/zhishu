@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ruijie.common.utils.MyException;
+import com.ruijie.modules.mgt.service.SignService;
 import com.ruijie.modules.mgt.service.TokenService;
 import com.ruijie.modules.mgt.entity.Banji;
+import com.ruijie.modules.mgt.entity.Sign;
 import com.ruijie.modules.mgt.entity.Token;
 import com.ruijie.modules.sys.entity.Dict;
 import com.ruijie.modules.sys.entity.User;
@@ -45,6 +47,9 @@ public class PhoneController {
 	private TokenService tokenService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private SignService signService;
+	
 	
 	
 	@ResponseBody
@@ -150,6 +155,58 @@ public class PhoneController {
 		return result;
 		
 	}
+	
+	/*
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "sign")
+	public Map<String,Object> sign(HttpServletRequest request,HttpServletResponse response) {
+		String token=StringUtils.clean(request.getParameter("token"));
+		Map<String,Object> result=new HashMap<String,Object>();
+		Token t=null;
+		try {
+			t=tokenService.authorizeToken(token);
+		} catch (MyException e) {
+			// TODO Auto-generated catch block
+			result.put("success", false);
+			result.put("errorCode", e.getCode());
+			result.put("message", e.getMessage());
+		}
+		if(t!=null){
+			User user=systemService.getUser(t.getUserId());
+			if(user.isTeacher()){
+				String parentId=StringUtils.clean(request.getParameter("parentsId"));
+				String type=StringUtils.clean(request.getParameter("type"));
+				String value=StringUtils.clean(request.getParameter("value"));
+				String remarks=StringUtils.clean(request.getParameter("remarks"));
+				if(parentId==null||type==null||value==null){
+					result.put("success", false);
+					result.put("errorCode", "10011");
+					result.put("message", "请求参数为空或错误");
+				}else{
+					Sign sign=new Sign();
+					sign.setParents(new User(parentId));
+					sign.setType(type);
+					sign.setValue(value);
+					sign.setCreateBy(user);
+					sign.setUpdateBy(user);
+					sign.setRemarks(remarks);
+					signService.save(sign);
+					result.put("success", true);
+				}
+			}else{
+				result.put("success", false);
+				result.put("errorCode", "10010");
+				result.put("message", "只有老师角色才能给学生签到");
+			}
+
+		}
+		return result;
+		
+	}
+	
+	
 	
 	private List<Map<String,Object>> getBanjiUsers(User loginUser){
 		List<Map<String,Object>> result=Lists.newArrayList();
