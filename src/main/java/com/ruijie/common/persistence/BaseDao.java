@@ -242,7 +242,7 @@ public class BaseDao<T> {
 					needInsert=StringUtils.isBlank((String)id);
 				}
 				if(id instanceof java.lang.Integer){
-					needInsert=(int)id<0;
+					needInsert=(Integer)id<0;
 				}
 				
 			}else{
