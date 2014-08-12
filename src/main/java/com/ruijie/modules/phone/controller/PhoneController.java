@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ruijie.common.utils.MyException;
+import com.ruijie.modules.mgt.service.MessageService;
 import com.ruijie.modules.mgt.service.SignService;
 import com.ruijie.modules.mgt.service.TokenService;
 import com.ruijie.modules.mgt.entity.Banji;
@@ -49,6 +50,8 @@ public class PhoneController {
 	private SystemService systemService;
 	@Autowired
 	private SignService signService;
+	@Autowired
+	private MessageService messageService;
 	
 	
 	
@@ -124,8 +127,6 @@ public class PhoneController {
 				result.put("errorCode", "10007");
 				result.put("message","更新数据库出错，请检查输入参数");
 			}
-			
-			
 		}
 		return result;
 		
@@ -193,6 +194,9 @@ public class PhoneController {
 					sign.setUpdateBy(user);
 					sign.setRemarks(remarks);
 					signService.save(sign);
+					//签到成功后，添加发消息记录
+					//*************************
+					messageService.save("hahahaha", parentId, user.getId(), "1",remarks);
 					result.put("success", true);
 				}
 			}else{
@@ -201,6 +205,73 @@ public class PhoneController {
 				result.put("message", "只有老师角色才能给学生签到");
 			}
 
+		}
+		return result;
+		
+	}
+	
+	/*
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "recieve_message")
+	public Map<String,Object> recieveMessage(HttpServletRequest request,HttpServletResponse response) {
+		String token=StringUtils.clean(request.getParameter("token"));
+		Map<String,Object> result=new HashMap<String,Object>();
+		Token t=null;
+		try {
+			t=tokenService.authorizeToken(token);
+		} catch (MyException e) {
+			// TODO Auto-generated catch block
+			result.put("success", false);
+			result.put("errorCode", e.getCode());
+			result.put("message", e.getMessage());
+		}
+		if(t!=null){
+			User user=systemService.getUser(t.getUserId());
+			//获得对应sendTo和status为1的message,发给响应
+			
+			
+			
+			//将这些message的status set为2，再调用save
+			
+			
+
+		}
+		return result;
+		
+	}
+	
+	/*
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "send_message")
+	public Map<String,Object> sendMessage(HttpServletRequest request,HttpServletResponse response) {
+		String token=StringUtils.clean(request.getParameter("token"));
+		String content=StringUtils.clean(request.getParameter("content"));
+		String sendTo=StringUtils.clean(request.getParameter("sendTo"));
+		String remarks=StringUtils.clean(request.getParameter("remarks"));
+		Map<String,Object> result=new HashMap<String,Object>();
+		Token t=null;
+		try {
+			t=tokenService.authorizeToken(token);
+		} catch (MyException e) {
+			// TODO Auto-generated catch block
+			result.put("success", false);
+			result.put("errorCode", e.getCode());
+			result.put("message", e.getMessage());
+		}
+		if(t!=null){
+			User user=systemService.getUser(t.getUserId());
+			if(sendTo==null||content==null){
+				result.put("success", false);
+				result.put("errorCode", "10011");
+				result.put("message", "请求参数为空或错误");
+			}else{
+				messageService.save(content, sendTo, user.getId(), "1",remarks);
+				result.put("success", true);
+			}
 		}
 		return result;
 		
@@ -247,6 +318,8 @@ public class PhoneController {
 		}
 		return result;
 	}
+	
+	
 	
 	
 

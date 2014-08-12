@@ -3,6 +3,7 @@ package com.ruijie.modules.mgt.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruijie.common.persistence.IdEntity;
 import com.ruijie.modules.sys.entity.User;
 
@@ -46,7 +48,7 @@ public class Message extends IdEntity<Message>{
     /**
      * 消息接收者       db_column: send_to 
      */ 	
-	private java.lang.String sendTo;
+	private User sendTo;
     /**
      * 消息状态       db_column: status 
      */ 	
@@ -59,13 +61,24 @@ public class Message extends IdEntity<Message>{
 	public void setContent(java.lang.String value) {
 		this.content = value;
 	}
-	public java.lang.String getSendTo() {
-		return this.sendTo;
+
+	@ManyToOne
+	@JoinColumn(name="send_to")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@NotNull(message="接受人不能为空")
+	@JsonIgnore
+	public User getSendTo() {
+		return sendTo;
+	}
+
+	public void setSendTo(User sendTo) {
+		this.sendTo = sendTo;
 	}
 	
-	public void setSendTo(java.lang.String value) {
-		this.sendTo = value;
+	public User getSendBy() {
+		return createBy;
 	}
+
 	public java.lang.String getStatus() {
 		return this.status;
 	}

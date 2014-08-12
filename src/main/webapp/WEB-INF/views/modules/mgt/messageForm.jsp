@@ -43,14 +43,16 @@
 		    <div class="control-group">
 				<label class="control-label">消息接收者:</label>
 				<div class="controls">
-					<form:input path="sendTo" htmlEscape="false" maxlength="200" class="required"/>
+					<form:input path="sendTo.id" htmlEscape="false" maxlength="200" class="required"/>
 				</div>
 		   </div>
 		    <div class="control-group">
 				<label class="control-label">消息状态:</label>
 				<div class="controls">
-					<form:input path="status" htmlEscape="false" maxlength="200" class="required"/>
-				</div>
+					<form:select path="status">
+						<form:options items="${fns:getDictList('mgt_message_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+			    </div>
 		   </div>
 		<div class="control-group">
 			<label class="control-label">备注:</label>
