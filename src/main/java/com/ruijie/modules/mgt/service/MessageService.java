@@ -5,7 +5,9 @@ package com.ruijie.modules.mgt.service;
 /**
  * message service.
  */
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -18,7 +20,6 @@ import com.ruijie.common.persistence.Page;
 import com.ruijie.common.service.BaseService;
 import com.ruijie.common.utils.Collections3;
 import com.ruijie.common.utils.DateUtils;
-import com.ruijie.common.utils.StringUtils;
 import com.ruijie.modules.mgt.entity.Message;
 import com.ruijie.modules.mgt.dao.MessageDao;
 import com.ruijie.modules.sys.entity.User;
@@ -78,5 +79,19 @@ public class MessageService extends BaseService {
 		message.setRemarks(remarks);
 		messageDao.save(message);
 	}
+	public List<Message> getNotReadMessage(String sendToId,String status){
+		List<Message> list=new ArrayList<Message>();
+		DetachedCriteria dc = messageDao.createDetachedCriteria();
+		
+		dc.createAlias("sendTo", "p");
+		dc.add(Restrictions.eq("p.id",sendToId));
+		
+		dc.add(Restrictions.eq("status",status));
+		dc.add(Restrictions.eq(Message.FIELD_DEL_FLAG, Message.DEL_FLAG_NORMAL));
+		dc.addOrder(Order.desc("createDate"));
+		return messageDao.find(dc);
+
+	}
+	
 	
 }

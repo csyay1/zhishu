@@ -9,6 +9,7 @@ import com.ruijie.common.persistence.BaseDao;
 import com.ruijie.common.persistence.Parameter;
 import com.ruijie.modules.mgt.entity.Message;
 
+
 /**
  * 数据库操作类
  * @author yuzhongyuan

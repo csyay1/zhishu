@@ -1,6 +1,8 @@
 package com.ruijie.modules.phone.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import com.ruijie.modules.mgt.entity.Sign;
 import com.ruijie.modules.mgt.entity.Token;
 import com.ruijie.modules.sys.entity.Dict;
 import com.ruijie.modules.sys.entity.User;
+import com.ruijie.modules.mgt.entity.Message;
 import com.ruijie.modules.sys.service.SystemService;
 import com.ruijie.modules.sys.utils.DictUtils;
 
@@ -196,7 +199,8 @@ public class PhoneController {
 					signService.save(sign);
 					//签到成功后，添加发消息记录
 					//*************************
-					messageService.save("hahahaha", parentId, user.getId(), "1",remarks);
+					String content="您家孩子"+DictUtils.getDictLabel(value, "mgt_sign_value", "")+"---老师："+user.getName()+",时间："+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+					messageService.save(content, parentId, user.getId(), "1",remarks);
 					result.put("success", true);
 				}
 			}else{
@@ -230,13 +234,14 @@ public class PhoneController {
 		if(t!=null){
 			User user=systemService.getUser(t.getUserId());
 			//获得对应sendTo和status为1的message,发给响应
-			
-			
-			
+			List<Message> list=messageService.getNotReadMessage(user.getId(), "1");
+			result.put("success", true);
+			result.put("messageList", list);		
 			//将这些message的status set为2，再调用save
-			
-			
-
+			for(Message m:list){
+				m.setStatus("2");
+				messageService.save(m);
+			}
 		}
 		return result;
 		
